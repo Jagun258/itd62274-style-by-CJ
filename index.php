@@ -28,7 +28,7 @@
 <script>
     $(() => {
         $('#get1').click(() => {
-            var url1 = 'http://cj-android-demon.herokuapp.com'
+            var url1 = 'https://cj-android-demon.herokuapp.com'
             $.get(url1, (data, status)=>{
                 console.log(data);
                 console.log(status);
@@ -36,7 +36,7 @@
             })
         })
         $('#get2').click(() => {
-            var url2 = 'http://cj-android-demon.herokuapp.com/add2.php'
+            var url2 = 'https://cj-android-demon.herokuapp.com/add2.php'
             var x = $('#x').val();
             var y = $('#y').val();
             $.post(
@@ -50,7 +50,7 @@
             )
         })
         $('#btnAdd').click(()=>{
-            var url = 'http://cj-android-demon.herokuapp.com'
+            var url = 'https://cj-android-demon.herokuapp.com'
             var x = $('#x').val();
             var y = $('#y').val();
             url+='/add.php?x='+x+'&y='+y
