@@ -34,8 +34,8 @@
         $.getJSON(url)
             .done((data) => {
                 console.log(data[1])
-                $('#fname').text(data.fname)
-                $('#lname').text(data.lname)
+                $('#fname').text(data[1].fname)
+                $('#lname').text(data[1].lname)
             })
             .fail((xhr, status, err) => {
                 console.log('error')
