@@ -18,9 +18,9 @@
 
 <script>
 
-    loadJSON=()=>{
-        var url='https://cj-android-demon.herokuapp.com/json1.php'
-        $.get(url,(data,status)=>{
+    loadJSON_get = () => {
+        var url = 'https://cj-android-demon.herokuapp.com/json1.php'
+        $.get(url, (data, status) => {
             console.log(jData)
             var jData = JSON.parse(data)
             console.log(jData)
@@ -29,8 +29,20 @@
         })
     }
 
-    $(()=>{
-        $('#btnJSON1').click(loadJSON)
+    loadJSON_getJSON = () => {
+        var url = 'https://cj-android-demon.herokuapp.com/json1.php'
+        $.getJSON(url)
+            .done((data) => {
+                console.log(data)
+                $('#fname').text(data.fname)
+                $('#lname').text(data.lname)
+            })
+            .fail((xhr, status, err) => {
+                console.log('error')
+            })
+    }
+    $(() => {
+        $('#btnJSON1').click(loadJSON_getJSON)
     })
 
 </script>
