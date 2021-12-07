@@ -7,44 +7,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <title>HTML CSS JavaScript 07/12/64</title>
+    <title>JSON PLACE HOLDER</title>
 </head>
 
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
 <body>
-    <span id='fname'></span>
-    <span id='lname'></span>
-    <button id='btnJSON1'>JSON 1</button>
+
+    <button id="btnBack" style="margin:10px"> back </button>
+    <div id="main">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th> Details </th>
+                </tr>
+            </thead>
+            <tbody id="tblPosts">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="detail" style="padding-top: 10px;"></div>
+    <div id="comments">
+        <h3>Comments</h3>
+        <div id="list-comment"></div>
+    </div>
+
 </body>
 
 <script>
 
-    loadJSON_get = () => {
-        var url = 'https://cj-android-demon.herokuapp.com/json1.php'
-        $.get(url, (data, status) => {
-            console.log(jData)
-            var jData = JSON.parse(data)
-            console.log(jData)
-            $('#fname').text(jData.fname)
-            $('#lname').text(jData.lname)
-        })
+    showComments=(id)=>{
+        var url = 'https://jsonplaceholder.typicode.com/posts/'+id+'/comments'
+        $.getJSON(url)
+            .done((data)=>{
+                $.each(data, (key,item)=>{
+                    var detail_comment = '<spawn>' + '<b>Name : </b>'+ item.name + '</spawn><br>'
+                        detail_comment += '<spawn>' + '<b>Comment : </b>'+ item.body + '</spawn><br><br>'
+                    $('#list-comment').append(detail_comment)
+                })
+            })
+            .fail((xhr, status, reason)=>{console.log('error')})
     }
 
-    loadJSON_getJSON = () => {
-        var url = 'https://cj-android-demon.herokuapp.com/json2.php'
+
+    showDetails = (id) => {
+        $("#main").hide();
+        $("#detail").show();
+        var url = "https://jsonplaceholder.typicode.com/posts/" + id;
         $.getJSON(url)
             .done((data) => {
-                console.log(data[1])
-                $('#fname').text(data[1].fname)
-                $('#lname').text(data[1].lname)
+                console.log(data);
+                var details = '<span>'+'<b>Post ID : </b>'+data.id+'</span><br>'
+                    details += '<span>'+ '<b>Title : </b>' + data.title + '</span><br>'
+                    details += '<span>' +'<b>Details : </b>'+ data.body + '</span>'
+                $("#detail").append(details)
             })
-            .fail((xhr, status, err) => {
+            .fail((xhr, status, error) => {
                 console.log('error')
             })
+        showComments(id)
     }
-    $(() => {
-        $('#btnJSON1').click(loadJSON_getJSON)
-    })
+    loadPosts = () => {
+        $("#main").show();
+        $("#details").hide();
 
+        var url = "https://jsonplaceholder.typicode.com/posts";
+        $.getJSON(url)
+            .done((data) => {
+                $.each(data, (k, item) => {
+                    console.log(item);
+                    var line = "<tr>";
+                    line += "<td>" + item.id + "</td>";
+                    line += "<td><b>" + item.title + "</b><br/>";
+                    line += item.body + "</td>";
+                    line += "<td> <button class='btnLink' onClick='showDetails(" + item.id + ");' > link </button> </td>";
+
+                    line += "</tr>";
+                    $("#tblPosts").append(line);
+                });
+                $("#main").show();
+            })
+            .fail((xhr, status, error) => {
+
+            })
+    }
+
+    $(() => {
+        loadPosts();
+        $("#btnBack").click(() => {
+            $("#main").show();
+            $("#detail").text('');
+            $("#list-comment").text('');
+        });
+    })
 </script>
 
 </html>
